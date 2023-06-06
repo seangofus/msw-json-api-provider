@@ -1,0 +1,911 @@
+openapi: 3.1.0
+x-stoplight:
+  id: v7wx91bvzyn4q
+info:
+  title: Music
+  version: "1.0"
+  summary: Music API
+  contact:
+    name: Advisors Excel
+    url: "https://www.advisorsexcel.com"
+    email: rich.carlsen@advisorsexcel.com
+  description: Service to handle all things music
+  license:
+    name: AE
+    url: "https://www.advisorsexcel.com"
+servers:
+  - url: "http://localhost:3000"
+paths:
+  "/v1/songs/{id}":
+    parameters:
+      - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/id"
+    get:
+      summary: Get Song
+      operationId: get-song-id
+      description: Get a song by its id.
+      tags:
+        - Songs
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Song"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Song"
+                    included:
+                      - $ref: "#/components/x-objects/Playlist"
+        "404":
+          description: Song Not Found
+    patch:
+      summary: Update Song
+      operationId: patch-song
+      description: Update a Song
+      tags:
+        - Songs
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Song"
+                    - required:
+                        - id
+            examples:
+              example:
+                value:
+                  data:
+                    type: songs
+                    id: "1"
+                    attributes:
+                      artist: The Lone Rangers
+                      album: LIVE IN PRISON
+                      title: Degenerated
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Song"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Song"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    delete:
+      summary: Delete Song
+      operationId: delete-song
+      tags:
+        - Songs
+      description: Delete Song.
+      responses:
+        "200":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/200-delete"
+        "204":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/204"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/songs":
+    get:
+      tags:
+        - Songs
+      summary: List Songs
+      operationId: get-songs
+      description: Get a list of Songs.
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageSize"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageNumber"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/sort"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/filter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponseList.yaml"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/Song"
+                            - required:
+                                - id
+              examples:
+                example:
+                  value:
+                    data:
+                      - $ref: "#/components/x-objects/Song"
+                    included:
+                      - $ref: "#/components/x-objects/Playlist"
+                    links:
+                      first: ../example
+                      last: ../example
+                      prev: ../example
+                      next: ../example
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    post:
+      tags:
+        - Songs
+      summary: Create Song
+      operationId: post-songs
+      description: Create a new song.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Song"
+                    - properties:
+                        attributes:
+                          required:
+                            - title
+                            - artist
+            examples:
+              example:
+                value:
+                  data:
+                    $ref: "#/components/x-objects/Song"
+      responses:
+        "201":
+          description: "[Created](https://jsonapi.org/format/#crud-creating-responses-201). Assigned `id` and/or any other changes are in this response."
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/Song"
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Song"
+                    included:
+                      - $ref: "#/components/x-objects/Playlist"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/albums/{id}":
+    parameters:
+      - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/id"
+    get:
+      summary: Get Album
+      operationId: get-album-id
+      description: Get an ablum by its id.
+      tags:
+        - Album
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Album"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Album"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+        "404":
+          description: Album Not Found
+    patch:
+      summary: Update Album
+      operationId: patch-album
+      description: Update an album
+      tags:
+        - Album
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Album"
+                    - required:
+                        - id
+            examples:
+              example:
+                value:
+                  data:
+                    type: albums
+                    id: "1"
+                    attributes:
+                      artworkUrl: "https://i.discogs.com/i6MXaXRBfHBSPzqpEXlpts2oGlGYFUaoZDW-OFPVBo4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM2ODEx/Ni0xNTg4ODgzOTM2/LTgyNDcuanBlZw.jpeg"
+                      releaseDate: "1995-01-01T00:00:00.0Z"
+                      title: Degenerated
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Album"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Album"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    delete:
+      summary: Delete Album
+      operationId: delete-album
+      tags:
+        - Album
+      description: Delete an album
+      responses:
+        "200":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/200-delete"
+        "204":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/204"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/albums":
+    get:
+      tags:
+        - Album
+      summary: List Albums
+      operationId: get-albums
+      description: Get a list of Albums.
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageSize"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageNumber"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/sort"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/filter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponseList.yaml"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/Album"
+                            - required:
+                                - id
+              examples:
+                example:
+                  value:
+                    data:
+                      - $ref: "#/components/x-objects/Album"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+                    links:
+                      first: ../example
+                      last: ../example
+                      prev: ../example
+                      next: ../example
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    post:
+      tags:
+        - Album
+      summary: Create Album
+      operationId: post-album
+      description: Create a new album.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Album"
+                    - properties:
+                        attributes:
+                          required:
+                            - title
+                            - releaseDate
+            examples:
+              example:
+                value:
+                  data:
+                    $ref: "#/components/x-objects/Album"
+      responses:
+        "201":
+          description: "[Created](https://jsonapi.org/format/#crud-creating-responses-201). Assigned `id` and/or any other changes are in this response."
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/Album"
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Album"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/playlists/{id}":
+    parameters:
+      - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/id"
+    get:
+      summary: Get Playlist
+      operationId: get-playlist-id
+      description: Get a playlist by its id.
+      tags:
+        - Playlist
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Playlist"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Playlist"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+        "404":
+          description: Album Not Found
+    patch:
+      summary: Update Playlist
+      operationId: patch-playlist
+      description: Update a Playlist
+      tags:
+        - Playlist
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Playlist"
+                    - required:
+                        - id
+            examples:
+              example:
+                value:
+                  data:
+                    type: playlists
+                    id: "1"
+                    attributes:
+                      name: Cool Playlist
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        type: object
+                        allOf:
+                          - $ref: "#/components/schemas/Playlist"
+                          - required:
+                              - id
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Playlist"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    delete:
+      summary: Delete Playlist
+      operationId: delete-playlist
+      tags:
+        - Playlist
+      description: Delete a playlist
+      responses:
+        "200":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/200-delete"
+        "204":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/204"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/playlists":
+    get:
+      tags:
+        - Playlist
+      summary: List Playlists
+      operationId: get-playlists
+      description: Get a list of Playlists.
+      parameters:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageSize"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/pageNumber"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/fields"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/sort"
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/filter"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponseList.yaml"
+                  - properties:
+                      data:
+                        type: array
+                        items:
+                          allOf:
+                            - $ref: "#/components/schemas/Playlist"
+                            - required:
+                                - id
+              examples:
+                example:
+                  value:
+                    data:
+                      - $ref: "#/components/x-objects/Playlist"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+                    links:
+                      first: ../example
+                      last: ../example
+                      prev: ../example
+                      next: ../example
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+    post:
+      tags:
+        - Playlist
+      summary: Create Playlist
+      operationId: post-playlist
+      description: Create a new playlist.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Playlist"
+                    - properties:
+                        attributes:
+                          required:
+                            - name
+            examples:
+              example:
+                value:
+                  data:
+                    $ref: "#/components/x-objects/Playlist"
+      responses:
+        "201":
+          description: "[Created](https://jsonapi.org/format/#crud-creating-responses-201). Assigned `id` and/or any other changes are in this response."
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/Playlist"
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Playlist"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/likes/{id}":
+    parameters:
+      - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/parameters/id"
+    delete:
+      summary: Delete Like
+      operationId: delete-like
+      tags:
+        - Like
+      description: Delete a like (unlike)
+      responses:
+        "200":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/200-delete"
+        "204":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/204"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+  "/v1/likes":
+    post:
+      tags:
+        - Like
+      summary: Create Like
+      operationId: post-like
+      description: Create a new like.
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              required:
+                - data
+              type: object
+              properties:
+                data:
+                  allOf:
+                    - $ref: "#/components/schemas/Like"
+                    - properties:
+                        attributes:
+                          required:
+                            - createdBy
+            examples:
+              example:
+                value:
+                  data:
+                    $ref: "#/components/x-objects/Like"
+      responses:
+        "201":
+          description: "[Created](https://jsonapi.org/format/#crud-creating-responses-201). Assigned `id` and/or any other changes are in this response."
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseResponse.yaml"
+                  - properties:
+                      data:
+                        $ref: "#/components/schemas/Like"
+              examples:
+                example:
+                  value:
+                    data:
+                      $ref: "#/components/x-objects/Like"
+                    included:
+                      - $ref: "#/components/x-objects/Song"
+        "401":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/401"
+        "403":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/403"
+        "404":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/404"
+        "409":
+          $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/reference/JSONAPI.yaml#/components/responses/409"
+components:
+  schemas:
+    Song:
+      x-type: songs
+      x-paths:
+        - /v1/songs
+        - /v1/songs/{id}
+      title: Song
+      type: object
+      allOf:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseObject.yaml"
+        - properties:
+            attributes:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the song.
+                  x-faker:
+                    fake: "{{hacker.adjective}} {{vehicle.type}}"
+                artist:
+                  type: string
+                  description: The musician who created the song
+                  x-faker: name.findName
+                length:
+                  type: string
+                  description: The length of the song
+                  x-faker:
+                    fake: "{{mersenne.rand(5)}}:{{mersenne.rand(59)}}"
+            relationships:
+              type: object
+              properties:
+                album:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltoone.yaml"
+                playlists:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltomany.yaml"
+                likes:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltomany.yaml"
+      examples:
+        - $ref: "#/components/x-objects/Song"
+    Album:
+      x-type: albums
+      x-paths:
+        - /v1/albums
+        - /v1/albums/{id}
+      title: Album
+      type: object
+      allOf:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseObject.yaml"
+        - properties:
+            attributes:
+              type: object
+              properties:
+                title:
+                  type: string
+                  description: The title of the song.
+                  x-faker:
+                    fake: "{{vehicle.color}} {{animal.dog}}"
+                releaseDate:
+                  type: string
+                  description: The date the album was released
+                  x-faker: date.past
+                  format: "date-time"
+                artworkUrl:
+                  type: string
+                  description: The url of the album artwork
+                  x-faker: image.cats
+            relationships:
+              type: object
+              properties:
+                songs:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltomany.yaml"
+      examples:
+        - $ref: "#/components/x-objects/Album"
+    Playlist:
+      x-type: playlists
+      x-paths:
+        - /v1/playlists
+        - /v1/playlists/{id}
+      title: Playlist
+      type: object
+      allOf:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseObject.yaml"
+        - properties:
+            attributes:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the playlist
+                  x-faker:
+                    fake: "{{vehicle.color}} {{music.genre}}"
+            relationships:
+              type: object
+              properties:
+                songs:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltomany.yaml"
+      examples:
+        - $ref: "#/components/x-objects/Playlist"
+    Like:
+      x-type: likes
+      x-paths:
+        - /v1/likes
+        - /v1/likes/{id}
+      title: Like
+      type: object
+      allOf:
+        - $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/baseObject.yaml"
+        - properties:
+            relationships:
+              type: object
+              properties:
+                songs:
+                  $ref: "https://stoplight.io/api/v1/projects/advisorsexcel/json-api/nodes/models/reltomany.yaml"
+      examples:
+        - $ref: "#/components/x-objects/Like"
+  x-objects:
+    Song:
+      type: songs
+      id: "1"
+      attributes:
+        createdBy: Ted.Lasso@gmail.com
+        createdAt: "2023-03-29T08:22:22Z"
+        updatedBy: Ted.Lasso@gmail.com
+        updatedAt: "2023-03-29T08:22:22Z"
+        artist: Radiohead
+        title: Street Spirit
+        length: "4:12"
+      relationships:
+        album:
+          data:
+            type: album
+            id: "1"
+        playlists:
+          data:
+            - type: playlists
+              id: "1"
+        likes:
+          data:
+            - type: likes
+              id: "1"
+    Album:
+      type: albums
+      id: "1"
+      attributes:
+        createdBy: Ted.Lasso@gmail.com
+        createdAt: "2023-03-29T08:22:22Z"
+        updatedBy: Ted.Lasso@gmail.com
+        updatedAt: "2023-03-29T08:22:22Z"
+        title: The Bends
+        releaseDate: "1995-01-01T00:00:00.0Z"
+        artworkUrl: "https://i.discogs.com/i6MXaXRBfHBSPzqpEXlpts2oGlGYFUaoZDW-OFPVBo4/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTM2ODEx/Ni0xNTg4ODgzOTM2/LTgyNDcuanBlZw.jpeg"
+      relationships:
+        songs:
+          data:
+            - type: songs
+              id: "1"
+    Playlist:
+      type: playlists
+      id: "1"
+      attributes:
+        createdBy: Ted.Lasso@gmail.com
+        createdAt: "2023-03-29T08:22:22Z"
+        updatedBy: Ted.Lasso@gmail.com
+        updatedAt: "2023-03-29T08:22:22Z"
+        name: examplePlaylist
+      relationships:
+        songs:
+          data:
+            - type: songs
+              id: "1"
+    Like:
+      type: likes
+      id: "1"
+      attributes:
+        createdBy: Ted.Lasso@gmail.com
+        createdAt: "2023-03-29T08:22:22Z"
+        updatedBy: Ted.Lasso@gmail.com
+        updatedAt: "2023-03-29T08:22:22Z"
+      relationships:
+        songs:
+          data:
+            - type: songs
+              id: "1"
+tags:
+  - name: Songs
+    description: Songs endpoints
+  - name: Album
+    description: Album endpoints
+  - name: Playlist
+    description: Playlist endpoints
+  - name: Like
+    description: Like endpoints

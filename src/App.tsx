@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <p>{query.data.test}</p>
+      <p>asdf</p>
     </>
   );
 }
