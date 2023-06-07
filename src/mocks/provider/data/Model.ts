@@ -145,6 +145,7 @@ export class Model {
       if (model.relationships) {
         Object.keys(model.relationships).forEach((key) => {
           const relationship = model.relationships[key];
+
           if (relationship.type.endsWith("reltoone.yaml")) {
             const oppositeModels = models
               .map((m) => {
@@ -154,38 +155,50 @@ export class Model {
               })
               .filter((m) => m);
 
-            if (oppositeModels) {
+            if (oppositeModels.length > 0) {
               const index = Math.floor(Math.random() * oppositeModels.length);
               const selectedModel = oppositeModels[index];
               model.relationships[key].data.push(selectedModel);
 
-              // TODO - add reverse relationship
+              // This works for one to one relationships
+              const inverseModel = models.find((m) => m.id === selectedModel);
+              if (inverseModel) {
+                inverseModel.relationships[model.type].data.push(model.id);
+              }
             }
           } else if (relationship.type.endsWith("reltomany.yaml")) {
-            const oppositeModels = models
-              .map((m) => {
-                if (m.type.includes(key)) {
-                  return m.id;
-                }
-              })
-              .filter((m) => m);
-            if (oppositeModels) {
-              const numItems =
-                Math.floor(Math.random() * oppositeModels.length) + 1;
-
-              const items = new Set();
-              for (let i = 0; i < numItems; i++) {
-                const randomIndex = Math.floor(
-                  Math.random() * oppositeModels.length
-                );
-                items.add(oppositeModels[randomIndex]);
-              }
-              model.relationships[key].data.push(...Array.from(items));
-              // TODO - add reverse relationship
-            }
+            // const oppositeModels = models
+            //   .map((m) => {
+            //     if (m.type.includes(key)) {
+            //       return m.id;
+            //     }
+            //   })
+            //   .filter((m) => m);
+            // if (oppositeModels.length > 0) {
+            //   const numItems =
+            //     Math.floor(Math.random() * oppositeModels.length) + 1;
+            //   const items = new Set();
+            //   for (let i = 0; i < numItems; i++) {
+            //     const randomIndex = Math.floor(
+            //       Math.random() * oppositeModels.length
+            //     );
+            //     items.add(oppositeModels[randomIndex]);
+            //   }
+            //   const relationshipArr = Array.from(items);
+            //   model.relationships[key].data.push(...relationshipArr);
+            //   // Create reverse relationship
+            //   relationshipArr.forEach((id) => {
+            //     const inverseModel = models.find((m) => m.id === id);
+            //     if (inverseModel) {
+            //       inverseModel.relationships[model.type].data.push(model.id);
+            //     }
+            //   });
+            // }
           }
         });
       }
     });
   }
 }
+
+//
