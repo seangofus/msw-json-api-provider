@@ -160,7 +160,7 @@ export class Model {
               const selectedModel = oppositeModels[index];
               model.relationships[key].data.push(selectedModel);
 
-              // This works for one to one relationships
+              // This works for to one relationships
               const inverseModel = models.find((m) => m.id === selectedModel);
               if (inverseModel) {
                 inverseModel.relationships[model.type].data.push(model.id);
