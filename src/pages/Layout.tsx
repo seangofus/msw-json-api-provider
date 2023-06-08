@@ -5,7 +5,7 @@ export default function Layout() {
     <main className="bg-gradient-to-t from-slate-900 to-slate-800">
       <header className="px-40 py-5 border-b border-slate-900">
         <span className="p-2 font-bold text-white rounded-full">
-          Super Cool API Demo
+          MSW JSON:API Provider Demo
         </span>
       </header>
       <div className="px-40 py-10">
