@@ -9,7 +9,8 @@ export class Context {
     return this.store[path];
   }
 
-  public findOne(path: string, id: string) {
-    return this.store[path].find((item) => item.id === id);
+  public findOne(id: string) {
+    const data = Object.values(this.store).flat();
+    return data.find((item) => item.id === id);
   }
 }

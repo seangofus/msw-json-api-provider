@@ -1,4 +1,5 @@
 import { getAllHandler } from "./getAll";
+import { getOneHandler } from "./getOne";
 
 export const getHandler = (
   path: string,
@@ -9,7 +10,8 @@ export const getHandler = (
   switch (method) {
     case "get":
       if (path.endsWith("{id}")) {
-        return null;
+        const transformedPath = path.replace("{id}", ":id");
+        return getOneHandler(transformedPath, dataContext, delay);
       }
       return getAllHandler(path, dataContext, delay);
     default:
