@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
 import Layout from "./pages/Layout.tsx";
+import Albums from "./pages/albums/Albums.tsx";
 
 if (import.meta.env.VITE_ENABLE_MSW === "true") {
   const module = await import("./mocks/browsers");
@@ -18,8 +19,8 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      { element: <div>Albums</div>, index: true },
-      { path: "albums", element: <div>Albums</div> },
+      { element: <Albums />, index: true },
+      { path: "albums", element: <Albums /> },
       { path: "songs", element: <div>Songs</div> },
       { path: "playlists", element: <div>Playlists</div> },
     ],

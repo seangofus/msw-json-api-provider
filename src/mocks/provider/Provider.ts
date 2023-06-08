@@ -38,6 +38,7 @@ export class Provider {
     const handlers: RestHandler[] = [];
     const dataContext = new Context(this.store);
     Object.keys(this.rawDoc.paths).forEach((path) => {
+      console.log(this.rawDoc.paths[path]);
       Object.keys(this.rawDoc.paths[path]).forEach((method) => {
         const handler = getHandler(
           path,
