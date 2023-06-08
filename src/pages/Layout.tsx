@@ -2,7 +2,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <main className="h-screen bg-gradient-to-t from-slate-900 to-slate-800">
+    <main className="bg-gradient-to-t from-slate-900 to-slate-800">
       <header className="px-40 py-5 border-b border-slate-900">
         <span className="p-2 font-bold text-white rounded-full">
           Super Cool API Demo
@@ -55,7 +55,7 @@ export default function Layout() {
             </li>
           </ul>
         </nav>
-        <section className="ml-80 pl-10 pr-5">
+        <section className="pl-10 pr-5 ml-80">
           <Outlet />
         </section>
       </div>

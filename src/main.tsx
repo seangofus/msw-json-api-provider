@@ -20,7 +20,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { element: <Albums />, index: true },
-      { path: "albums", element: <Albums /> },
+      {
+        path: "albums",
+        element: <Albums />,
+      },
+      {
+        path: "albums/:id",
+        element: <div>asdf</div>,
+      },
       { path: "songs", element: <div>Songs</div> },
       { path: "playlists", element: <div>Playlists</div> },
     ],

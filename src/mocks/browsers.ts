@@ -1,5 +1,5 @@
 // src/mocks/browser.js
-import { setupWorker, rest } from "msw";
+import { setupWorker, rest, RestHandler } from "msw";
 import { Provider } from "./provider/Provider";
 
 const testProvider = new Provider("../../reference/Music.yaml");

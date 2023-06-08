@@ -782,7 +782,8 @@ components:
                 artworkUrl:
                   type: string
                   description: The url of the album artwork
-                  x-faker: image.abstract
+                  x-faker:
+                    fake: "{{image.abstract(1024)}}"
             relationships:
               type: object
               properties:
