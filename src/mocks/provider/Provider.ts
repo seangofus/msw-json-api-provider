@@ -1,9 +1,12 @@
 import { parse } from "yaml";
-import { Model } from "./data/model";
+import { Model } from "./data/Model";
+import { RestHandler } from "msw";
+import { getHandler } from "./handlers";
+import { Context } from "./data/Context";
 
 type Config = {
   defaultModelSize?: number;
-  delay?: number;
+  responseDelay?: number;
 };
 
 export class Provider {
@@ -12,7 +15,7 @@ export class Provider {
 
   constructor(
     private docPath: string,
-    private config: Config = { defaultModelSize: 10, delay: 0 }
+    private config: Config = { defaultModelSize: 10, responseDelay: 0 }
   ) {}
 
   public async setup() {
@@ -25,9 +28,29 @@ export class Provider {
 
       this.setupStore();
       console.log(this.store);
+      return this;
     } catch (e) {
       throw new Error("Failed to load OpenAPI document");
     }
+  }
+
+  public getHandlers() {
+    const handlers: RestHandler[] = [];
+    const dataContext = new Context(this.store);
+    Object.keys(this.rawDoc.paths).forEach((path) => {
+      Object.keys(this.rawDoc.paths[path]).forEach((method) => {
+        const handler = getHandler(
+          path,
+          method,
+          dataContext,
+          this.config.responseDelay
+        );
+        if (handler) {
+          handlers.push(handler);
+        }
+      });
+    });
+    return handlers;
   }
 
   private setupStore() {

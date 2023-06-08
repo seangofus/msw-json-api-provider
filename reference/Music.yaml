@@ -782,7 +782,7 @@ components:
                 artworkUrl:
                   type: string
                   description: The url of the album artwork
-                  x-faker: image.cats
+                  x-faker: image.abstract
             relationships:
               type: object
               properties:
