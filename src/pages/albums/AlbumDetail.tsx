@@ -1,6 +1,6 @@
 import ky from "ky";
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useParams, useNavigate } from "react-router-dom";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 type AlbumData = {
   type: "albums";
@@ -24,6 +24,19 @@ type AlbumResonse = {
 
 export default function AlbumDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const albumMutation = useMutation({
+    mutationFn: () => {
+      return ky.delete(`http://127.0.0.1:4000/v1/albums/${id}`).json();
+    },
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["albums"] });
+      navigate("/albums");
+    },
+  });
+
   const getData: Promise<AlbumResonse> = ky
     .get(`http://127.0.0.1:4000/v1/albums/${id}`)
     .json();
@@ -32,6 +45,11 @@ export default function AlbumDetail() {
     ["albums", id],
     () => getData
   );
+
+  function handleDelete() {
+    albumMutation.mutate();
+  }
+
   return (
     <div className="my-2">
       <h1 className="mb-4 font-bold text-transparent uppercase text-8xl bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
@@ -44,8 +62,15 @@ export default function AlbumDetail() {
             Math.random() * 1000
           )}`}
           alt={data?.data.attributes.title}
-          className="block object-cover w-full h-full rounded-xl"
+          className="block object-cover w-full h-full mb-8 rounded-xl"
         />
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="float-right p-2 text-white transition bg-pink-500 rounded-md hover:bg-pink-600"
+        >
+          Delete Album
+        </button>
       </div>
     </div>
   );

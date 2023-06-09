@@ -30,4 +30,12 @@ export class Context {
     this.store[path].push(data);
     return data;
   }
+
+  public remove(path: string, id: string) {
+    const dataSection = path.substring(0, path.lastIndexOf("/"));
+    const data = this.store[dataSection];
+    const filtered = data.filter((item) => item.id !== id);
+    this.store[dataSection] = [...filtered];
+    return true;
+  }
 }
