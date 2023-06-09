@@ -4,6 +4,7 @@ type AlbumCardProps = {
   artworkUrl: string;
   title: string;
   releaseDate: string;
+  id: string;
 };
 
 export function AlbumCard({
@@ -20,7 +21,7 @@ export function AlbumCard({
   return (
     <div
       onClick={() => handleClick(id)}
-      className="relative h-40 m-4 rounded-lg shadow-lg cursor-pointer w-96 bg-gradient-to-t from-slate-600/10 to-slate-300/10"
+      className="relative h-40 m-4 rounded-lg shadow-lg cursor-pointer grow w-96 bg-gradient-to-t from-slate-600/10 to-slate-300/10"
     >
       <div className="absolute w-40 h-40 border-r rounded-l-lg bg-gradient-to-r from-sky-700/60 to-purple-300/60 border-slate-900" />
       <img

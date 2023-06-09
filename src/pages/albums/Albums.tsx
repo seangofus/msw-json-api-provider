@@ -1,7 +1,8 @@
 import ky from "ky";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import { AlbumCard } from "./components/AlbumCard";
+import { NavLink } from "react-router-dom";
 
 type AlbumData = {
   type: "albums";
@@ -39,10 +40,19 @@ export default function Albums() {
 
   return (
     <>
-      <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
-        Albums
-      </h1>
-      {isLoading ? <p>Loading...</p> : null}
+      <div className="mb-2">
+        <h1 className="float-left text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
+          Albums
+        </h1>
+        <NavLink
+          to="/albums/create"
+          className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
+        >
+          Create Album
+        </NavLink>
+      </div>
+      <div className="clear-both mb-4" />
+
       <div className="flex flex-wrap my-2">
         {data?.data.map((album) => {
           return (
