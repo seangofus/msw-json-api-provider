@@ -16,8 +16,6 @@ export const postHandler = (
     const serializer = new Serializer(entity);
     const serializedData = serializer.serialize();
 
-    console.log(dataContext.getStore());
-
     return res(
       ctx.status(201),
       ctx.json(serializedData),
