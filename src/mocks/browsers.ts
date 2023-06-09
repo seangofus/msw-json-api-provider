@@ -1,12 +1,13 @@
 // src/mocks/browser.js
-import { setupWorker, rest, RestHandler } from "msw";
+import { setupWorker } from "msw";
 import { Provider } from "./provider/Provider";
 
-const testProvider = new Provider("../../reference/Music.yaml");
-await testProvider.setup();
+const jsonApiProviders = new Provider("../../reference/Music.yaml", {
+  defaultModelSize: 3,
+  localStorage: true,
+});
+await jsonApiProviders.setup();
 
-const coolHandlers = testProvider.getHandlers();
+const coolHandlers = jsonApiProviders.getHandlers();
 
-// const handlers = getHandlers("../../reference/Music.yaml");
-// This configures a Service Worker with the given request handlers.
 export const worker = setupWorker(...coolHandlers);

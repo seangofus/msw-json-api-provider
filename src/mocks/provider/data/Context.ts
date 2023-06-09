@@ -1,7 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
 
+type LocalStorageConfig = {
+  localStorage?: boolean;
+  localStorageKey?: string;
+};
 export class Context {
-  constructor(private store: Record<string, Record<string, any>[]>) {}
+  constructor(
+    private store: Record<string, Record<string, any>[]>,
+    private localStorageConfig: LocalStorageConfig = {}
+  ) {}
 
   public getStore() {
     return this.store;
@@ -47,15 +54,10 @@ export class Context {
     }
 
     this.store[dataSection].push(data);
-    return data;
-  }
 
-  public update(path: string, id: string, data: any) {
-    const dataSection = path.substring(0, path.lastIndexOf("/"));
-    const dataToUpdate = this.store[dataSection].find((item) => item.id === id);
-    if (!dataToUpdate) {
-      return null;
-    }
+    this.persistToLocalStorage();
+
+    return data;
   }
 
   public remove(path: string, id: string) {
@@ -63,6 +65,18 @@ export class Context {
     const data = this.store[dataSection];
     const filtered = data.filter((item) => item.id !== id);
     this.store[dataSection] = [...filtered];
+
+    this.persistToLocalStorage();
+
     return true;
+  }
+
+  private persistToLocalStorage() {
+    if (this.localStorageConfig.localStorage) {
+      localStorage.setItem(
+        this.localStorageConfig.localStorageKey ?? "",
+        JSON.stringify(this.store)
+      );
+    }
   }
 }

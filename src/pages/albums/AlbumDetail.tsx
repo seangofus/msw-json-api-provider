@@ -64,20 +64,23 @@ export default function AlbumDetail() {
           alt={data?.data.attributes.title}
           className="block object-cover w-full h-full mb-8 rounded-xl"
         />
-        <button
-          type="button"
-          onClick={handleDelete}
-          className="float-left p-2 text-white transition bg-pink-500 rounded-md hover:bg-pink-600"
-        >
-          Delete Album
-        </button>
-        <NavLink
-          to={`/albums/edit/${id}`}
-          className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
-        >
-          Update Album
-        </NavLink>
+        <div>
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="float-left p-2 text-white transition bg-pink-500 rounded-md hover:bg-pink-600"
+          >
+            Delete Album
+          </button>
+          <NavLink
+            to={`/albums/edit/${id}`}
+            className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
+          >
+            Update Album
+          </NavLink>
+        </div>
       </div>
+      <div className="clear-both" />
     </div>
   );
 }
