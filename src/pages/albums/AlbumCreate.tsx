@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 import { FormField } from "../../components/FormField";
 import ky from "ky";
@@ -26,6 +27,7 @@ export type Errors = {
 export type Status = "idle" | "submitted";
 
 export default function AlbumCreate() {
+  const navigate = useNavigate();
   const [album, setAlbum] = useState(newAlbum);
   const [status, setStatus] = useState<Status>("idle");
   const [formKey, setFormKey] = useState(0);
@@ -46,7 +48,11 @@ export default function AlbumCreate() {
     },
     onSuccess: () => {
       // Invalidate and refetch
+      setFormKey(formKey + 1);
+      setAlbum(newAlbum);
+      setStatus("idle");
       queryClient.invalidateQueries({ queryKey: ["albums"] });
+      navigate("/albums");
     },
   });
 

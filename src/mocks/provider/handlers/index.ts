@@ -1,5 +1,6 @@
 import { getAllHandler } from "./getAll";
 import { getOneHandler } from "./getOne";
+import { postHandler } from "./post";
 
 export const getHandler = (
   path: string,
@@ -14,6 +15,8 @@ export const getHandler = (
         return getOneHandler(transformedPath, dataContext, delay);
       }
       return getAllHandler(path, dataContext, delay);
+    case "post":
+      return postHandler(path, dataContext, delay);
     default:
       return null;
   }
