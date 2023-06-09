@@ -1,6 +1,5 @@
 import ky from "ky";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
 
 import { AlbumCard } from "./components/AlbumCard";
 
@@ -30,7 +29,7 @@ export default function Albums() {
     .json();
 
   const { data, isLoading, isRefetching, isError } = useQuery(
-    "albums",
+    ["albums"],
     () => getData
   );
 
@@ -43,6 +42,7 @@ export default function Albums() {
       <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
         Albums
       </h1>
+      {isLoading ? <p>Loading...</p> : null}
       <div className="flex flex-wrap my-2">
         {data?.data.map((album) => {
           return (

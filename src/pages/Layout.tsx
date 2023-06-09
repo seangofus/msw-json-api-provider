@@ -2,7 +2,7 @@ import { Outlet, NavLink } from "react-router-dom";
 
 export default function Layout() {
   return (
-    <main className="bg-gradient-to-t from-slate-900 to-slate-800">
+    <main className="min-h-screen bg-gradient-to-t from-slate-900 to-slate-700">
       <header className="px-40 py-5 border-b border-slate-900">
         <span className="p-2 font-bold text-white rounded-full">
           MSW JSON:API Provider Demo
