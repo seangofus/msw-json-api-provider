@@ -1,5 +1,5 @@
 import ky from "ky";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 
 type AlbumData = {
@@ -17,7 +17,7 @@ type AlbumData = {
   relationships?: {};
 };
 
-type AlbumResonse = {
+export type AlbumResonse = {
   data: AlbumData;
   included?: [];
 };
@@ -67,10 +67,16 @@ export default function AlbumDetail() {
         <button
           type="button"
           onClick={handleDelete}
-          className="float-right p-2 text-white transition bg-pink-500 rounded-md hover:bg-pink-600"
+          className="float-left p-2 text-white transition bg-pink-500 rounded-md hover:bg-pink-600"
         >
           Delete Album
         </button>
+        <NavLink
+          to={`/albums/edit/${id}`}
+          className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
+        >
+          Update Album
+        </NavLink>
       </div>
     </div>
   );
