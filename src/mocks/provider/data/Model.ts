@@ -140,7 +140,7 @@ export class Model {
 
   public static seedRelationships(store: Record<string, any>[]) {
     const models = Object.values(store).flat();
-    console.log(models);
+    // console.log(models);
     models.forEach((model) => {
       if (model.relationships) {
         Object.keys(model.relationships).forEach((key) => {

@@ -5,6 +5,6 @@ import { Provider } from "./provider/Provider";
 const jsonApiProviders = new Provider("../../reference/Music.yaml");
 await jsonApiProviders.setup();
 
-const coolHandlers = jsonApiProviders.getHandlers();
+const jsonApiHandlers = jsonApiProviders.getHandlers();
 
-export const worker = setupWorker(...coolHandlers);
+export const worker = setupWorker(...jsonApiHandlers);
