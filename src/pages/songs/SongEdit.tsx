@@ -109,7 +109,7 @@ export default function SongEdit() {
     <>
       <div className="mb-2">
         <h1 className="float-left text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
-          Song Create
+          Song Edit
         </h1>
       </div>
       <div className="clear-both mb-4" />
@@ -148,7 +148,7 @@ export default function SongEdit() {
           type="submit"
           className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
         >
-          Create Song
+          Edit Song
         </button>
       </form>
     </>

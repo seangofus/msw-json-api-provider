@@ -53,7 +53,7 @@ export class Context {
       this.store[dataSection] = [...filteredData];
     }
 
-    this.store[dataSection].push(data);
+    this.store[dataSection].unshift(data);
 
     this.persistToLocalStorage();
 
