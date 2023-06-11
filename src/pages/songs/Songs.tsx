@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ky from "ky";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 type SongData = {
   type: "albums";
@@ -24,6 +24,7 @@ type SongResonse = {
 
 export default function Songs() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   async function getData(): Promise<SongResonse> {
     const songs = await ky.get("http://127.0.0.1:4000/v1/songs").json();
@@ -56,6 +57,10 @@ export default function Songs() {
 
   function handleDelete(id: string) {
     songDeleteMutation.mutate(id);
+  }
+
+  function handleEdit(id: string) {
+    navigate(`/songs/edit/${id}`);
   }
 
   return (
@@ -111,7 +116,12 @@ export default function Songs() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <a>Edit</a>
+                    <a
+                      className="cursor-pointer text-sky-500"
+                      onClick={() => handleEdit(song.id)}
+                    >
+                      Edit
+                    </a>
                     <a
                       className="pl-4 text-pink-500 cursor-pointer"
                       onClick={() => handleDelete(song.id)}
@@ -140,7 +150,12 @@ export default function Songs() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right rounded-r-lg">
-                    <a>Edit</a>
+                    <a
+                      className="cursor-pointer text-sky-500"
+                      onClick={() => handleEdit(song.id)}
+                    >
+                      Edit
+                    </a>
                     <a
                       className="pl-4 text-pink-500 cursor-pointer"
                       onClick={() => handleDelete(song.id)}
