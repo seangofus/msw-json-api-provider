@@ -122,13 +122,13 @@ export default function Songs() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <a
-                      className="cursor-pointer text-sky-500"
+                      className="cursor-pointer text-sky-500 hover:underline"
                       onClick={() => handleEdit(song.id)}
                     >
                       Edit
                     </a>
                     <a
-                      className="pl-4 text-pink-500 cursor-pointer"
+                      className="pl-4 text-pink-500 cursor-pointer hover:underline"
                       onClick={() => handleDelete(song.id)}
                     >
                       Delete
@@ -156,13 +156,13 @@ export default function Songs() {
                   </td>
                   <td className="px-4 py-3 text-right rounded-r-lg">
                     <a
-                      className="cursor-pointer text-sky-500"
+                      className="cursor-pointer text-sky-500 hover:underline"
                       onClick={() => handleEdit(song.id)}
                     >
                       Edit
                     </a>
                     <a
-                      className="pl-4 text-pink-500 cursor-pointer"
+                      className="pl-4 text-pink-500 cursor-pointer hover:underline"
                       onClick={() => handleDelete(song.id)}
                     >
                       Delete
