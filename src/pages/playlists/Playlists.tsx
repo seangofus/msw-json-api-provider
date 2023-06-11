@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import ky from "ky";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -50,7 +51,11 @@ export default function Playlists() {
   }
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="flex flex-wrap justify-center my-2">
+        <CircularProgress />
+      </div>
+    );
   }
 
   function handleDelete(id: string) {

@@ -1,5 +1,6 @@
 import ky from "ky";
 import { useQuery } from "@tanstack/react-query";
+import { CircularProgress } from "@mui/material";
 
 import { AlbumCard } from "./components/AlbumCard";
 import { NavLink } from "react-router-dom";
@@ -36,6 +37,14 @@ export default function Albums() {
 
   if (isError) {
     return <p>Failed to load songs</p>;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-wrap justify-center my-2">
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
