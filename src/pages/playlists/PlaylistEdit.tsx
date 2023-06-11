@@ -6,54 +6,50 @@ import { useNavigate } from "react-router-dom";
 import { FormField } from "../../components/FormField";
 import ky from "ky";
 
-type NewSong = {
-  title: string;
-  artist: string;
-  length: string;
+type NewPlaylist = {
+  name: string;
 };
 
-const newSong: NewSong = {
-  title: "",
-  artist: "",
-  length: "",
+const newPlaylist: NewPlaylist = {
+  name: "",
 };
 
 export type Errors = {
-  title?: string;
-  artist?: string;
-  length?: string;
+  name?: string;
 };
 
 export type Status = "idle" | "submitted";
 
-export default function SongEdit() {
+export default function PlaylistEdit() {
   const { id } = useParams();
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ["songs", id],
+    queryKey: ["playlists", id],
     queryFn: async () => {
-      const data = await ky.get(`http://127.0.0.1:4000/v1/songs/${id}`).json();
-      setSong({ ...newSong, ...data.data.attributes });
+      const data = await ky
+        .get(`http://127.0.0.1:4000/v1/playlists/${id}`)
+        .json();
+      setPlaylist({ ...newPlaylist, ...data.data.attributes });
       return data;
     },
   });
 
   const navigate = useNavigate();
-  const [song, setSong] = useState(newSong);
+  const [playlist, setPlaylist] = useState(newPlaylist);
   const [status, setStatus] = useState<Status>("idle");
   const [formKey, setFormKey] = useState(0);
   const queryClient = useQueryClient();
-  const albumMutation = useMutation({
-    mutationFn: (song: NewSong) => {
+  const playlistEditMutation = useMutation({
+    mutationFn: (playlist: NewPlaylist) => {
       const json = {
         data: {
-          type: "songs",
+          type: "playlists",
           id,
-          attributes: song,
+          attributes: playlist,
         },
       };
       return ky
-        .patch(`http://127.0.0.1:4000/v1/songs/${id}`, {
+        .patch(`http://127.0.0.1:4000/v1/playlists/${id}`, {
           json,
         })
         .json();
@@ -61,10 +57,10 @@ export default function SongEdit() {
     onSuccess: () => {
       // Invalidate and refetch
       setFormKey(formKey + 1);
-      setSong(newSong);
+      setPlaylist(playlist);
       setStatus("idle");
-      queryClient.invalidateQueries({ queryKey: ["songs", id] });
-      navigate(`/songs`);
+      queryClient.invalidateQueries({ queryKey: ["playlists", id] });
+      navigate(`/playlists`);
     },
   });
 
@@ -73,19 +69,13 @@ export default function SongEdit() {
   function onChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ): void {
-    setSong({ ...song, [e.target.id]: e.target.value });
+    setPlaylist({ ...playlist, [e.target.id]: e.target.value });
   }
 
   function validate() {
     const errors: Errors = {};
-    if (!song.title) {
-      errors.title = "Title is required";
-    }
-    if (!song.artist) {
-      errors.artist = "Artist is required";
-    }
-    if (!song.length) {
-      errors.length = "Length is required";
+    if (!playlist.name) {
+      errors.name = "Name is required";
     }
 
     return errors;
@@ -98,7 +88,7 @@ export default function SongEdit() {
       return;
     }
 
-    albumMutation.mutate({ ...song });
+    playlistEditMutation.mutate({ ...playlist });
   }
 
   if (isLoading) {
@@ -109,37 +99,21 @@ export default function SongEdit() {
     <>
       <div className="mb-2">
         <h1 className="float-left text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
-          Song Edit
+          Playlist Edit
         </h1>
       </div>
       <div className="clear-both mb-4" />
       <form key={formKey} onSubmit={onSubmit}>
         <FormField
-          label="Title"
-          id="title"
+          label="Playlist Name"
+          id="name"
           onChange={onChange}
-          value={song.title}
-          error={errors.title}
-          formSubmitted={status === "submitted"}
-        />
-        <FormField
-          label="Artist"
-          id="artist"
-          onChange={onChange}
-          value={song.artist}
-          error={errors.artist}
-          formSubmitted={status === "submitted"}
-        />
-        <FormField
-          label="Song Length"
-          id="length"
-          onChange={onChange}
-          value={song.length}
-          error={errors.length}
+          value={playlist.name}
+          error={errors.name}
           formSubmitted={status === "submitted"}
         />
         <NavLink
-          to="/songs"
+          to="/playlists"
           className="float-left p-2 text-white transition rounded-md bg-slate-500 hover:bg-slate-600"
         >
           Cancel
@@ -148,7 +122,7 @@ export default function SongEdit() {
           type="submit"
           className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
         >
-          Save Song
+          Save Playlist
         </button>
       </form>
     </>

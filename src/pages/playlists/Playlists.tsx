@@ -3,16 +3,14 @@ import ky from "ky";
 import { NavLink, useNavigate } from "react-router-dom";
 
 type SongData = {
-  type: "songs";
+  type: "playlists";
   id: string;
   attributes: {
     createdBy: string;
     createdAt: string;
     updatedBy: string;
     updatedAt: string;
-    artist: string;
-    length: string;
-    title: string;
+    name: string;
   };
   relationships?: {};
 };
@@ -22,33 +20,33 @@ type SongResonse = {
   included?: [];
 };
 
-export default function Songs() {
+export default function Playlists() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   async function getData(): Promise<SongResonse> {
-    const songs = await ky.get("http://127.0.0.1:4000/v1/songs").json();
-    return songs;
+    const playlists = await ky.get("http://127.0.0.1:4000/v1/playlists").json();
+    return playlists;
   }
 
   const { data, isLoading, isRefetching, isError } = useQuery(
-    ["songs"],
+    ["playlists"],
     getData
   );
 
-  const songDeleteMutation = useMutation({
+  const songPlaylistMutation = useMutation({
     mutationFn: (id: string) => {
-      return ky.delete(`http://127.0.0.1:4000/v1/songs/${id}`).json();
+      return ky.delete(`http://127.0.0.1:4000/v1/playlists/${id}`).json();
     },
     onSuccess: async () => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["songs"] });
-      await ky.get("http://127.0.0.1:4000/v1/songs").json();
+      queryClient.invalidateQueries({ queryKey: ["playlists"] });
+      await ky.get("http://127.0.0.1:4000/v1/playlists").json();
     },
   });
 
   if (isError) {
-    return <p>Failed to load songs</p>;
+    return <p>Failed to load playlists</p>;
   }
 
   if (isLoading) {
@@ -56,24 +54,24 @@ export default function Songs() {
   }
 
   function handleDelete(id: string) {
-    songDeleteMutation.mutate(id);
+    songPlaylistMutation.mutate(id);
   }
 
   function handleEdit(id: string) {
-    navigate(`/songs/edit/${id}`);
+    navigate(`/playlists/edit/${id}`);
   }
 
   return (
     <>
       <div className="mb-2">
         <h1 className="float-left text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-purple-500">
-          Songs
+          Playlists
         </h1>
         <NavLink
-          to="/songs/create"
+          to="/playlists/create"
           className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
         >
-          Create Song
+          Create Playlist
         </NavLink>
       </div>
       <div className="clear-both mb-4" />
@@ -83,13 +81,13 @@ export default function Songs() {
           <thead className="text-white rounded-lg bg-slate-800">
             <tr>
               <th className="w-1/3 px-4 py-3 text-sm font-semibold text-left uppercase rounded-l-lg">
-                Title
+                Name
               </th>
               <th className="w-1/3 px-4 py-3 text-sm font-semibold text-left uppercase">
-                Artist
+                Created By
               </th>
-              <th className="px-4 py-3 text-sm font-semibold text-left uppercase">
-                Length
+              <th className="w-1/3 px-4 py-3 text-sm font-semibold text-left uppercase">
+                Updated By
               </th>
               <th className="px-4 py-3 text-sm font-semibold text-left uppercase">
                 Last Updated
@@ -98,33 +96,33 @@ export default function Songs() {
             </tr>
           </thead>
           <tbody className="text-slate-300" key={data?.data.length}>
-            {data?.data.map((song, idx) => {
+            {data?.data.map((playlist, idx) => {
               return idx % 2 === 0 ? (
-                <tr key={song.id}>
+                <tr key={playlist.id}>
                   <td className="w-1/3 px-4 py-3 text-left capitalize">
-                    {song.attributes.title}
+                    {playlist.attributes.name}
                   </td>
-                  <td className="w-1/3 px-4 py-3 text-left capitalize">
-                    {song.attributes.artist}
+                  <td className="w-1/3 px-4 py-3 text-left lowercase">
+                    {playlist.attributes.createdBy}
+                  </td>
+                  <td className="w-1/3 px-4 py-3 text-left lowercase">
+                    {playlist.attributes.updatedBy}
                   </td>
                   <td className="px-4 py-3 text-left">
-                    {song.attributes.length}
-                  </td>
-                  <td className="px-4 py-3 text-left">
-                    {new Date(song.attributes.updatedAt).toLocaleDateString(
+                    {new Date(playlist.attributes.updatedAt).toLocaleDateString(
                       "en-US"
                     )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <a
                       className="cursor-pointer text-sky-500"
-                      onClick={() => handleEdit(song.id)}
+                      onClick={() => handleEdit(playlist.id)}
                     >
                       Edit
                     </a>
                     <a
                       className="pl-4 text-pink-500 cursor-pointer"
-                      onClick={() => handleDelete(song.id)}
+                      onClick={() => handleDelete(playlist.id)}
                     >
                       Delete
                     </a>
@@ -132,33 +130,33 @@ export default function Songs() {
                 </tr>
               ) : (
                 <tr
-                  key={song.id}
+                  key={playlist.id}
                   className="rounded-lg shadow-lg bg-gradient-to-t from-slate-600/10 to-slate-300/10"
                 >
                   <td className="w-1/3 px-4 py-3 text-left capitalize rounded-l-lg">
-                    {song.attributes.title}
+                    {playlist.attributes.name}
                   </td>
-                  <td className="w-1/3 px-4 py-3 text-left capitalize">
-                    {song.attributes.artist}
+                  <td className="w-1/3 px-4 py-3 text-left lowercase">
+                    {playlist.attributes.createdBy}
+                  </td>
+                  <td className="w-1/3 px-4 py-3 text-left lowercase">
+                    {playlist.attributes.updatedBy}
                   </td>
                   <td className="px-4 py-3 text-left">
-                    {song.attributes.length}
-                  </td>
-                  <td className="px-4 py-3 text-left">
-                    {new Date(song.attributes.updatedAt).toLocaleDateString(
+                    {new Date(playlist.attributes.updatedAt).toLocaleDateString(
                       "en-US"
                     )}
                   </td>
                   <td className="px-4 py-3 text-right rounded-r-lg">
                     <a
                       className="cursor-pointer text-sky-500"
-                      onClick={() => handleEdit(song.id)}
+                      onClick={() => handleEdit(playlist.id)}
                     >
                       Edit
                     </a>
                     <a
                       className="pl-4 text-pink-500 cursor-pointer"
-                      onClick={() => handleDelete(song.id)}
+                      onClick={() => handleDelete(playlist.id)}
                     >
                       Delete
                     </a>

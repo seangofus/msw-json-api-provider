@@ -41,9 +41,9 @@ export class Context {
       data.id = uuidv4();
       data.createdAt = new Date().toISOString();
       data.createdBy = "john.doe@sample.com";
-      data.updatedBy = "john.doe@sample.com";
     }
 
+    data.updatedBy = "john.doe@sample.com";
     data.updatedAt = new Date().toISOString();
 
     if (action === "EDIT") {
