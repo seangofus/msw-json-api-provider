@@ -13,6 +13,7 @@ import AlbumCreate from "./pages/albums/AlbumCreate.tsx";
 import AlbumEdit from "./pages/albums/AlbumEdit.tsx";
 
 import Songs from "./pages/songs/Songs.tsx";
+import SongCreate from "./pages/songs/SongCreate.tsx";
 
 if (import.meta.env.VITE_ENABLE_MSW === "true") {
   const module = await import("./mocks/browsers");
@@ -43,6 +44,7 @@ const router = createBrowserRouter([
         element: <AlbumEdit />,
       },
       { path: "songs", element: <Songs /> },
+      { path: "songs/create", element: <SongCreate /> },
       { path: "playlists", element: <div>Playlists</div> },
     ],
   },

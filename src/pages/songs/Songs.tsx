@@ -65,7 +65,7 @@ export default function Songs() {
           Songs
         </h1>
         <NavLink
-          to="/albums/create"
+          to="/songs/create"
           className="float-right p-2 text-white transition rounded-md bg-sky-500 hover:bg-sky-600"
         >
           Create Song
