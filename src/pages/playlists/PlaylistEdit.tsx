@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import { FormField } from "../../components/FormField";
 import ky from "ky";
+import { CircularProgress } from "@mui/material";
 
 type NewPlaylist = {
   name: string;
@@ -92,7 +93,11 @@ export default function PlaylistEdit() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex flex-wrap justify-center my-2">
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (

@@ -1,6 +1,7 @@
 import ky from "ky";
 import { useParams, useNavigate, NavLink } from "react-router-dom";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { CircularProgress } from "@mui/material";
 
 type AlbumData = {
   type: "albums";
@@ -48,6 +49,14 @@ export default function AlbumDetail() {
 
   function handleDelete() {
     albumMutation.mutate();
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-wrap justify-center my-2">
+        <CircularProgress />
+      </div>
+    );
   }
 
   return (
