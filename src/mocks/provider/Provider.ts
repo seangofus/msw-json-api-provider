@@ -22,12 +22,9 @@ export class Provider {
       ...this.config,
       ...config,
     };
-    console.log(this.config);
   }
 
   public async setup() {
-    console.log("setup");
-
     try {
       const doc = await fetch(this.docPath);
       const text = await doc.text();
