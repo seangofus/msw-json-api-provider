@@ -15,7 +15,7 @@ export function AlbumCard({
 }: AlbumCardProps) {
   const navigate = useNavigate();
   const handleClick = (id: string) => {
-    navigate(`${id}`);
+    navigate(`/albums/${id}`);
   };
 
   return (
